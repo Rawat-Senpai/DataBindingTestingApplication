@@ -2,6 +2,7 @@ package com.example.databindingdummyprojects.adapter
 
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
@@ -9,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.databindingdummyprojects.databinding.LayoutProductBinding
 import com.example.databindingdummyprojects.models.ProductApiResponseItem
 
-class ProductAdapter() :
+class ProductAdapter(private val onProductClicked: (ProductApiResponseItem) -> Unit) :
     ListAdapter<ProductApiResponseItem, ProductAdapter.ProductViewHolder>(ProductDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProductViewHolder {
@@ -27,7 +28,20 @@ class ProductAdapter() :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(product: ProductApiResponseItem) {
             binding.product = product
+
+//            binding.clickListener = View.OnClickListener{
+//
+//            }
+
+            binding.fullLayout.setOnClickListener(){
+                onProductClicked(product)
+            }
+
+
+
             binding.executePendingBindings()
+
+
         }
     }
 

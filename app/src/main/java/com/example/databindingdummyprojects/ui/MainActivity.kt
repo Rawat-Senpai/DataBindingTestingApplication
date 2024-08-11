@@ -1,5 +1,6 @@
 package com.example.databindingdummyprojects.ui
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
@@ -15,6 +16,7 @@ import com.example.databindingdummyprojects.utils.NetworkResult
 import com.example.databindingdummyprojects.R
 import com.example.databindingdummyprojects.adapter.ProductAdapter
 import com.example.databindingdummyprojects.databinding.ActivityMainBinding
+import com.example.databindingdummyprojects.models.ProductApiResponseItem
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -24,8 +26,8 @@ class MainActivity : AppCompatActivity() {
 
     private val viewModel by viewModels<MainViewModel>()
 
-    private val   productAdapter by lazy { ProductAdapter() }
-
+//    private val   productAdapter by lazy { ProductAdapter(::onProductClicked) }
+lateinit var productAdapter:ProductAdapter
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -34,13 +36,8 @@ class MainActivity : AppCompatActivity() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
 
 
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
-        }
 
-//        productAdapter = ProductAdapter()
+        productAdapter = ProductAdapter(::onProductClicked)
         binding.recyclerView.adapter=productAdapter
         binding.recyclerView.layoutManager= LinearLayoutManager(this)
 
@@ -75,6 +72,12 @@ class MainActivity : AppCompatActivity() {
         })
 
 
+    }
+
+    private fun onProductClicked(product: ProductApiResponseItem){
+        val intent = Intent(this,DetailsActivity::class.java)
+        intent.putExtra("id",product.id.toString())
+        startActivity(intent)
     }
 
 

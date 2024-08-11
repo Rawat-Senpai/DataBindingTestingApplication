@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.databindingdummyprojects.utils.NetworkResult
 import com.example.databindingdummyprojects.models.ProductApiResponse
+import com.example.databindingdummyprojects.models.ProductApiResponseItem
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -23,17 +24,17 @@ class MainViewModel @Inject constructor(private val repository: ProductRepositor
     }
 
     val getAllProducts:LiveData<NetworkResult<ProductApiResponse>?> get() = repository.allProducts
-//
-//
-//    fun getMovieDetails(imdbId:String){
-//
-//        viewModelScope.launch {
-//            repository.getMovieDetails(imdbId)
-//        }
-//
-//    }
-//
-//    val getMovieDetails:LiveData<NetworkResult<MovieDetailResponseModel>?> get() = repository.movieDetails
+
+
+    fun getProductDetails(productId:String){
+
+        viewModelScope.launch {
+            repository.getProductDetails(productId)
+        }
+
+    }
+
+    val getProductDetails:LiveData<NetworkResult<ProductApiResponseItem>?> get() = repository.productDetails
 
 
 }
